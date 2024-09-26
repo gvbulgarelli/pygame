@@ -2,6 +2,9 @@ import pygame
 from constants import *
 from circleshape import CircleShape
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
+from shot import Shot
 
 def main():
     print(f"Starting pygame!")
@@ -18,12 +21,18 @@ def main():
     #creating groups
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     #adding player to groups
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (updatable, drawable, asteroids)
+    AsteroidField.containers = (updatable,)
+    Shot.containers = (updatable, drawable, shots)
 
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    asterodifield = AsteroidField()
 
     #game loop
     while True:
@@ -40,8 +49,17 @@ def main():
         for elem in updatable:
             elem.update(dt)
         #display every elem in drawable group
+        for item in asteroids:
+            if item.collision(player):
+                print("Game Over!")
+                return
+            for bullet in shots:
+                if item.collision(bullet):
+                    bullet.kill()
+                    item.split()
         for elem in drawable:
             elem.draw(screen)
+        
         
     #updates the screen
         pygame.display.flip()
