@@ -26,33 +26,29 @@ def main():
     asteroids = pygame.sprite.Group()
     shots = pygame.sprite.Group()
 
-    score = Score()
+    
 
     #adding player to groups
     Player.containers = (updatable, drawable)
     Asteroid.containers = (updatable, drawable, asteroids)
     AsteroidField.containers = (updatable,)
     Shot.containers = (updatable, drawable, shots)
-    Score.containers = (drawable,)
-
-    
 
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asterodifield = AsteroidField()
-    
+    score = Score("Player1")
 
     drawable.add(score)
-    print("Number of drawable sprites:", len(drawable))
 
-    print("Entering main game loop")
     #game loop
     while True:
-        print("Game loop iteration")
         #checks if the window got closed and stop the program
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+            elif event.type == SCORE_CHANGE_EVENT:
+                score.add_points(event.points)
             
         #creates the black screen with the size of screen variable
         pygame.Surface.fill(screen, "black")
@@ -69,15 +65,11 @@ def main():
                 if item.collision(bullet):
                     bullet.kill()
                     item.split()
-        print("Number of drawable sprites in loop:", len(drawable))
         for elem in drawable:
-            print("Drawing:", type(elem).__name__)
             elem.draw(screen)
         
     #updates the screen
         pygame.display.flip()
-
-        print("Game loop ended")
 
         #clock that controls time
         dt = Clock.tick(60) / 1000

@@ -1,4 +1,3 @@
-
 import pygame
 import random
 from circleshape import *
@@ -21,8 +20,8 @@ class Asteroid(CircleShape):
     def split(self):
         self.kill()
         if self.radius <= ASTEROID_MIN_RADIUS:
-            Score.kill_point()
-            return
+            pygame.event.post(pygame.event.Event(SCORE_CHANGE_EVENT, points=KILL_SCORE))
+            return 
         else:
             angle = random.uniform(20, 50)
             vector_a = self.velocity.rotate(-angle)
@@ -32,6 +31,6 @@ class Asteroid(CircleShape):
             asteroid_b = Asteroid(self.position.x, self.position.y, new_radius)
             asteroid_a.velocity = vector_a * 1.2
             asteroid_b.velocity = vector_b * 1.2
-            Score.hit_point()
+            pygame.event.post(pygame.event.Event(SCORE_CHANGE_EVENT, points=HIT_SCORE))
     
 
