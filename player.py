@@ -1,6 +1,6 @@
 
 from circleshape import CircleShape
-from shot import Shot
+from shot import *
 from constants import *
 import pygame
 
@@ -44,6 +44,8 @@ class Player(CircleShape):
             self.move(-dt)
         if keys[pygame.K_SPACE]:
             self.shoot()
+        if keys[pygame.K_b]:
+            self.shoot_bomb()
         
         self.timer -= dt
 
@@ -56,4 +58,10 @@ class Player(CircleShape):
             bullet = Shot(self.position.x, self.position.y, SHOT_RADIUS)
             bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
             self.timer = PLAYER_SHOOT_COOLDOWN
+
+    def shoot_bomb(self):
+        if self.timer <= 0:
+            bullet = Bomb(self.position.x, self.position.y, BOMB_RADIUS)
+            bullet.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_BOMB_SPEED
+            self.timer = PLAYER_BOMB_COOLDOWN
         

@@ -4,7 +4,7 @@ from circleshape import CircleShape
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
-from shot import Shot
+from shot import *
 from score import Score
 from lifes import LifeTracker
 from menu import show_menu
@@ -37,6 +37,7 @@ def main():
     Asteroid.containers = (updatable, drawable, asteroids)
     AsteroidField.containers = (updatable,)
     Shot.containers = (updatable, drawable, shots)
+    Bomb.containers = (updatable, drawable, shots)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, player_name)
     asterodifield = AsteroidField()
